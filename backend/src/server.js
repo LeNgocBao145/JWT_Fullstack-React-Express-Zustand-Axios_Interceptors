@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './libs/db.js'
+import route from './routes/index.js'
 
 // Load environment variables
 dotenv.config();
@@ -11,6 +12,8 @@ const PORT = process.env.PORT || 5001;
 // middeware
 // This help express understand json format of request body
 app.use(express.json());
+
+route(app);
 
 connectDB().then(() => {
     app.listen(PORT, () => {
