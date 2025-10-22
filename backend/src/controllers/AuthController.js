@@ -77,7 +77,7 @@ class AuthController{
             //Return refreshToken through cookie
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                sameSite: true,
+                sameSite: "none",
                 secure: true,
                 maxAge: REFRESH_TOKEN_TTL
             })
