@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './libs/db.js'
 import route from './routes/index.js'
+import cookieParser from 'cookie-parser';
 
 // Load environment variables
 dotenv.config();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 5001;
 // middeware
 // This help express understand json format of request body
 app.use(express.json());
+app.use(cookieParser());
 
 route(app);
 

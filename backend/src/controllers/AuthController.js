@@ -8,7 +8,7 @@ const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 const ACCESS_TOKEN_TTL = '30m'; // Max ttl of access token is just 15m
 
 class AuthController{
-    async signup(req, res, next){
+    async signUp(req, res, next){
         try {
             const { username, password, email, firstName, lastName } = req.body;
 
@@ -40,7 +40,7 @@ class AuthController{
         }
     }
 
-    async signin(req, res, next){
+    async signIn(req, res, next){
         try {            
             const { username, password } = req.body;
     
@@ -84,12 +84,31 @@ class AuthController{
 
             return res.status(200).json({message: `User ${authUser.displayName} logged in`, accessToken});
         } catch (error) {
-            console.error('Error when signing up', error);
+            console.error('Error when signing in', error);
             return res.status(500).json({ message: 'Internal server error' });            
         }
 
 
 
+    }
+
+    async signOut(req, res, next){
+        try {
+            const refreshToken = req.cookies?.refreshToken;
+
+            if(refreshToken){
+                // Delete refresh token in session
+                await Session.deleteOne({refreshToken});
+
+                //Delete cookie
+                res.clearCookie('refreshToken');
+            }
+
+            return res.sendStatus(204);
+        } catch (error) {
+            console.error('Error when signing out', error);
+            return res.status(500).json({ message: 'Internal server error' });        
+        }
     }
 }
 
