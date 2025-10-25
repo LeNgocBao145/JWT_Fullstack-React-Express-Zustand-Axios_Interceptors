@@ -12,17 +12,14 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const signUpFormSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+const signInFormSchema = z.object({
   userName: z.string().min(3, "Username is at least 3 characters"),
-  email: z.email("Invalid email address"),
   password: z.string().min(9, "Password must be at least 9 characters"),
 });
 
-type SignUpFormType = z.infer<typeof signUpFormSchema>;
+type SignInFormType = z.infer<typeof signInFormSchema>;
 
-export function SignupForm({
+export function SigninForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -30,11 +27,11 @@ export function SignupForm({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormType>({
-    resolver: zodResolver(signUpFormSchema),
+  } = useForm<SignInFormType>({
+    resolver: zodResolver(signInFormSchema),
   });
 
-  const onSubmit = async (data: SignUpFormType) => {
+  const onSubmit = async (data: SignInFormType) => {
     
   };
 
@@ -48,43 +45,11 @@ export function SignupForm({
                 <a href="/" className="mx-auto block w-fit text-center">
                   <img src="/logo.svg" alt="Moji Logo" />
                 </a>
-                <h1 className="text-2xl font-bold">Create your Moji account</h1>
+                <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-muted-foreground text-sm text-balance">
-                  Welcome! Please sign up to begin!
+                  Sign in your Moji account
                 </p>
-              </div>
-              <Field>
-                <Field className="grid grid-cols-2 gap-4">
-                  <Field>
-                    <FieldLabel htmlFor="firstname">First Name</FieldLabel>
-                    <Input
-                      id="firstname"
-                      type="text"
-                      
-                      {...register("firstName")}
-                    />
-                    {errors.firstName && (
-                      <p className="text-destructive text-sm">
-                        {errors.firstName.message}
-                      </p>
-                    )}
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="lastname">Last Name</FieldLabel>
-                    <Input
-                      id="lastname"
-                      type="text"
-                      
-                      {...register("lastName")}
-                    />
-                    {errors.lastName && (
-                      <p className="text-destructive text-sm">
-                        {errors.lastName.message}
-                      </p>
-                    )}
-                  </Field>
-                </Field>
-              </Field>
+              </div>            
               <Field>
                 <FieldLabel htmlFor="username">Username</FieldLabel>
                 <Input
@@ -99,22 +64,7 @@ export function SignupForm({
                     {errors.userName.message}
                   </p>
                 )}
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  
-                  {...register("email")}
-                />
-                {errors.email && (
-                  <p className="text-destructive text-sm">
-                    {errors.email.message}
-                  </p>
-                )}
-              </Field>
+              </Field>              
               <Field>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
                 <Input
@@ -131,17 +81,17 @@ export function SignupForm({
               </Field>
               <Field>
                 <Button type="submit" disabled={isSubmitting}>
-                  Create Account
+                  Sign in
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Already have an account? <a href="#">Sign in</a>
+                You don't have account? <a href="/signup">Sign up</a>
               </FieldDescription>
             </FieldGroup>
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholderSignUp.png"
+              src="/placeholder.png"
               alt="Image"
               className="absolute top-1/2 -translate-y-1/2 object-cover"
             />
