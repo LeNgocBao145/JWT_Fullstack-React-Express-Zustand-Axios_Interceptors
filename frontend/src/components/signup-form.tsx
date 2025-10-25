@@ -1,31 +1,52 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const signUpFormSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  userName: z.string().min(3, "Username is at least 3 characters"),
+  email: z.email("Invalid email address"),
+  password: z.string().min(9, "Password must be at least 9 characters"),
+});
+
+type SignUpFormType = z.infer<typeof signUpFormSchema>;
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpFormType>({
+    resolver: zodResolver(signUpFormSchema),
+  });
+
+  const onSubmit = async (data: SignUpFormType) => {
+    
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0 border-border">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <a href="/" className="mx-auto block w-fit text-center">
-                  <img
-                    src="/logo.svg"
-                    alt="Moji Logo"
-                  />                
+                  <img src="/logo.svg" alt="Moji Logo" />
                 </a>
                 <h1 className="text-2xl font-bold">Create your Moji account</h1>
                 <p className="text-muted-foreground text-sm text-balance">
@@ -36,11 +57,31 @@ export function SignupForm({
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel htmlFor="firstname">First Name</FieldLabel>
-                    <Input id="firstname" type="text" required />
+                    <Input
+                      id="firstname"
+                      type="text"
+                      
+                      {...register("firstName")}
+                    />
+                    {errors.firstName && (
+                      <p className="text-destructive text-sm">
+                        {errors.firstName.message}
+                      </p>
+                    )}
                   </Field>
                   <Field>
-                    <FieldLabel htmlFor="last-name">Last Name</FieldLabel>
-                    <Input id="last-name" type="text" required />
+                    <FieldLabel htmlFor="lastname">Last Name</FieldLabel>
+                    <Input
+                      id="lastname"
+                      type="text"
+                      
+                      {...register("lastName")}
+                    />
+                    {errors.lastName && (
+                      <p className="text-destructive text-sm">
+                        {errors.lastName.message}
+                      </p>
+                    )}
                   </Field>
                 </Field>
               </Field>
@@ -50,8 +91,14 @@ export function SignupForm({
                   id="username"
                   type="text"
                   placeholder="moji123"
-                  required
+                  
+                  {...register("userName")}
                 />
+                {errors.userName && (
+                  <p className="text-destructive text-sm">
+                    {errors.userName.message}
+                  </p>
+                )}
               </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -59,15 +106,33 @@ export function SignupForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-destructive text-sm">
+                    {errors.email.message}
+                  </p>
+                )}
               </Field>
               <Field>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input id="password" type="password" required />
-              </Field>                
+                <Input
+                  id="password"
+                  type="password"
+                  
+                  {...register("password")}
+                />
+                {errors.password && (
+                  <p className="text-destructive text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
+              </Field>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  Create Account
+                </Button>
               </Field>
               <FieldDescription className="text-center">
                 Already have an account? <a href="#">Sign in</a>
@@ -88,5 +153,5 @@ export function SignupForm({
         and <a href="#">Privacy Policy</a>.
       </div>
     </div>
-  )
+  );
 }
