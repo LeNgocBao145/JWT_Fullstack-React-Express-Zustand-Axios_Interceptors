@@ -42,6 +42,9 @@ const useAuthStore = create<AuthState>((set, get) => ({
         set({ loading: true });   
         const {accessToken} = await authService.signIn(username, password);
         set({accessToken: accessToken});
+
+        await get().fetchMe();
+
         toast.success("Welcome to Moji!");
     } catch (error) {
         console.error(error);
@@ -59,6 +62,19 @@ const useAuthStore = create<AuthState>((set, get) => ({
     } catch (error) {
         console.error(error);
         toast.error("Error signing out");
+    }
+  }, 
+
+  fetchMe: async () => {
+    try {
+        set({loading: true});
+        const user = await authService.fetchMe();
+        set({user});
+    } catch (error) {
+        console.error(error);
+        toast.error("Error fetching data from database!");
+    } finally {
+        set({ loading: false });
     }
   }
 }));
