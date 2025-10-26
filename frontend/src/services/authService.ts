@@ -17,6 +17,7 @@ const authService = {
         return res.data;
     } catch (error) {
         console.error(error);
+        throw error;
     }
   },
 
@@ -33,6 +34,7 @@ const authService = {
         return res.data;
     } catch (error) {
         console.error(error);
+        throw error;
     }
   },
 
@@ -46,6 +48,7 @@ const authService = {
         return res.data;
     } catch (error) {
         console.error(error);
+        throw error;
     }
   },
 };

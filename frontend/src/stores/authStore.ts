@@ -40,11 +40,12 @@ const useAuthStore = create<AuthState>((set, get) => ({
   signIn: async (username: string, password: string) => {
     try {
         set({ loading: true });   
-        await authService.signIn(username, password);
+        const {accessToken} = await authService.signIn(username, password);
+        set({accessToken: accessToken});
         toast.success("Welcome to Moji!");
     } catch (error) {
         console.error(error);
-        toast.error("Error signing up");
+        toast.error("Error signing in");
     } finally {
         set({ loading: false });
     }
