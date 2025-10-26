@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router";
+import useAuthStore from "@/stores/authStore";
 
 const signUpFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -26,6 +28,9 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const {signUp} = useAuthStore();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -35,7 +40,13 @@ export function SignupForm({
   });
 
   const onSubmit = async (data: SignUpFormType) => {
-    
+    try {
+      const {firstName, lastName, userName, email, password} = data;
+      await signUp(firstName, lastName, userName, email, password);
+      navigate("/signin");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
