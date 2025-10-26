@@ -14,6 +14,14 @@ class UserController{
             return res.status(500).json({ message: 'Internal server error' });                
         }
     }
+
+    async test(req, res, next){
+        try {
+            return res.sendStatus(204);
+        } catch (error) {
+            return res.status(500).json({ message: 'Internal server error' });   
+        }
+    }
 }
 
 export default new UserController();

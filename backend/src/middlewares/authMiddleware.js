@@ -16,7 +16,7 @@ export const protectedRoute = (req, res, next) => {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (error, decodedUser) => {
             if(error){
                 console.error(error);
-                return res.status(404).json({message: 'Access token is timeout or invalid'});
+                return res.status(403).json({message: 'Access token is timeout or invalid'});
             }
 
             //Find User and get all information except hashedPassword
