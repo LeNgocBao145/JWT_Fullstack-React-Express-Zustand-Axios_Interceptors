@@ -58,6 +58,16 @@ const authService = {
       throw error;
     }
   },
+
+  refresh: async () => {
+    try {
+      const res = await api.post("/auth/refresh", {withCredentials: true});
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 };
 
 export default authService;

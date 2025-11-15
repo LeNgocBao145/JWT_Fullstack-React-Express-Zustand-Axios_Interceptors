@@ -12,6 +12,10 @@ const useAuthStore = create<AuthState>((set, get) => ({
     set({accessToken: null, user: null, loading: false});
   },
 
+  setAccessToken: (newAccessToken: string) => {
+    set({accessToken: newAccessToken});
+  },
+
   signUp: async (
     firstname: string,
     lastname: string,
@@ -75,6 +79,25 @@ const useAuthStore = create<AuthState>((set, get) => ({
         toast.error("Error fetching data from database!");
     } finally {
         set({ loading: false });
+    }
+  },
+
+  refresh: async () => {
+    try {
+      set({ loading: true });
+      const {user, fetchMe} = get();
+      const {accessToken} = await authService.refresh();
+      set({accessToken});
+
+      if(!user){
+        await fetchMe();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Login session is expired, please sign in again!!");
+      get().clearState();
+    } finally {
+      set({ loading: false });
     }
   }
 }));
