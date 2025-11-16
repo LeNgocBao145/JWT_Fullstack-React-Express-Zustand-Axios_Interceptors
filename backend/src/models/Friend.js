@@ -15,7 +15,7 @@ const friendSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-friendSchema.pre('save', () => {
+friendSchema.pre('save', function(next) {
     const a = this.userA.toString();
     const b = this.userB.toString();
 
