@@ -60,7 +60,7 @@ const conversationSchema = new mongoose.Schema({
         type: groupSchema,
     },
     seenBy: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: [mongoose.Schema.Types.ObjectId],
         ref: "User",
     },
     lastMessageAt: {

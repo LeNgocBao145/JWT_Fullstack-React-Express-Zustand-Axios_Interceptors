@@ -3,7 +3,7 @@ import MessageController from '../controllers/MessageController.js';
 
 const router = express.Router();
 
-// router.post('/direct');
-// router.post('/group');
+router.post('/direct', MessageController.sendDirectMessage);
+// router.post('/group', MessageController.sendGroupMessage);
 
 export default router;
