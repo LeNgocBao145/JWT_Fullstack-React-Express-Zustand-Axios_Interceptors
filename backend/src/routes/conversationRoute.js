@@ -6,6 +6,6 @@ const router = express.Router();
 router.get('/', ConversationController.getConversations);
 router.post('/', ConversationController.createConversation);
 router.get('/:conversationId/message', ConversationController.getMessages);
-router.put('/:conversationId/seen');
+// router.put('/:conversationId/seen');
 
 export default router;
