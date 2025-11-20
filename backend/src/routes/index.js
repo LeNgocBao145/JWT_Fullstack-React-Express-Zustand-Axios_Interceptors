@@ -3,7 +3,6 @@ import userRouter from './userRoute.js';
 import friendRouter from './friendRoute.js';
 import messageRouter from './messageRoute.js';
 import conversationRouter from './conversationRoute.js';
-import { checkFriendship } from '../middlewares/friendMiddleware.js';
 import { protectedRoute } from '../middlewares/authMiddleware.js';
 import swaggerUi from 'swagger-ui-express';
 // Library 'fs' is imported to read files, but it's not used in this code.
@@ -16,7 +15,7 @@ function route(app) {
     app.use(protectedRoute);
     app.use('/api/users', userRouter);
     app.use('/api/friends', friendRouter);
-    app.use('/api/messages', checkFriendship, messageRouter);
+    app.use('/api/messages', messageRouter);
     app.use('/api/conversations', conversationRouter);
 }
 

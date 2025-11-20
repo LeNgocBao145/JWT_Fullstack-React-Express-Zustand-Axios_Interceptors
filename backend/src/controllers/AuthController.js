@@ -30,7 +30,7 @@ class AuthController {
         username,
         hashedPassword,
         email,
-        displayName: `${firstName} ${lastName}`,
+        displayName: `${lastName} ${firstName}`,
       });
 
       return res.sendStatus(204);

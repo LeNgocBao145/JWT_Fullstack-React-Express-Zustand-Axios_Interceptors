@@ -57,49 +57,37 @@ class MessageController {
             return res.status(500).json({ message: "Internal server error!!" });
         }
     }
-    // async sendGroupMessage(req, res, next){
-    //     try {
-    //         const {to, content} = req.body;
-    //         const userId = req.user._id;
+    async sendGroupMessage(req, res, next){
+        try {
+            const {conversationId, content} = req.body;
+            const userId = req.user._id;
 
-    //         if(!message){
-    //             return res.status(400).json({ message: "Message is empty!!" });
-    //         }
+            const conversation = req.conversation;
 
-    //         const user = await User.findOne({ _id: to });
+            if(!content){
+                return res.status(400).json({ message: "Message is empty!!" });
+            }
 
-    //         if(!user){
-    //             return res.status(404).json({ message: "The user that you sent message to is not existed!!" });            
-    //         }
+            const message = await Message.create({
+                conversationId,
+                senderId: userId,
+                content,
+            });
 
-    //         const conversation = await Conversation.create({
-    //             type: 'direct',
-    //             participants: [
-    //                 { userId: to },
-    //                 { userId }
-    //             ],                
-    //         });
+            if(!message){
+                return res.status(403).json({ message: "Error when create message!!" });                
+            }
 
-    //         if(!conversation){
-    //             return res.status(403).json({ message: "Error when create a conversation!!" });
-    //         }
+            updateConversationAfterCreateMessage(conversation, userId, message);
 
-    //         const message = await Message.create({
-    //             conversationId: conversation._id,
-    //             senderId: userId,
-    //             content: message,
-    //         });
+            await conversation.save();
 
-    //         if(!message){
-    //             return res.status(403).json({ message: "Error when create message!!" });                
-    //         }
-
-    //         return res.status(200).json({ message: "Send direct message successfully!!", message });
-    //     } catch (error) {
-    //         console.error("Error when send group message!");
-    //         return res.status(500).json({ message: "Internal server error!!" });
-    //     }
-    // }
+            return res.status(200).json({ message: "Send direct message successfully!!", message });
+        } catch (error) {
+            console.error("Error when send group message!");
+            return res.status(500).json({ message: "Internal server error!!" });
+        }
+    }
 }
 
 const messageController = new MessageController();
