@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import type { AuthState } from "@/types/Store";
 import { persist } from "zustand/middleware";
+import useChatStore from "./chatStore";
 
 const useAuthStore = create<AuthState>()(
   persist(
@@ -14,6 +15,7 @@ const useAuthStore = create<AuthState>()(
       clearState: () => {
         set({ accessToken: null, user: null, loading: false });
         localStorage.clear();
+        useChatStore.getState().reset();
       },
 
       setAccessToken: (newAccessToken: string) => {
@@ -47,17 +49,19 @@ const useAuthStore = create<AuthState>()(
         }
       },
 
-      signIn: async (username: string, password: string) => {
+      signIn: async (username: string, password: string) => {      
         try {
           set({ loading: true });
 
           localStorage.clear();
+          useChatStore.getState().reset();
 
           const { accessToken } = await authService.signIn(username, password);
           set({ accessToken: accessToken });
 
           await get().fetchMe();
-
+          useChatStore.getState().fetchConversations();
+          
           toast.success("Welcome to Moji!");
         } catch (error) {
           console.error(error);

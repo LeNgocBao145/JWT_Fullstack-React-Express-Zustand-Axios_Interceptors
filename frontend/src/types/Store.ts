@@ -1,3 +1,4 @@
+import type { Conversation, ConversationResponse, Message } from "./Chat";
 import type { User } from "./User"; 
 
 export interface AuthState {
@@ -36,5 +37,16 @@ export interface ThemeState{
 };
 
 export interface ChatStore{
+  conversations: Conversation[];
+  messages: Record<string, {
+    items: Message[],
+    hasMore: boolean; // infinite-scroll
+    nextCursor?: string | null; // pagination
+  }>;
+  activeConversationId: string | null;
+  loading: boolean;
+  reset: () => void;
 
+  setActiveConversationId: (id: string | null) => void;
+  fetchConversations: () => Promise<void>;
 };

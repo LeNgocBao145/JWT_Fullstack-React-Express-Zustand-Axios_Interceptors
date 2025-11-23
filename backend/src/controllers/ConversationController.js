@@ -97,7 +97,7 @@ class ConversationController {
         .sort({ lastMessageAt: -1, updatedAt: -1 })
         .populate({
           path: "participants.userId",
-          select: "displayName, avatarUrl",
+          select: "displayName avatarUrl",
         })
         .populate({ path: "seenBy", select: "displayName avatarUrl" })
         .populate({
@@ -124,7 +124,7 @@ class ConversationController {
         return {
           // Use toObject here to prevent uneccessary metadata information from Mongoose document
           ...conversation.toObject(),
-          unreadCount: conversation.unreadCount || {},
+          unreadCounts: conversation.unreadCount || {},
           participants,
         };
       });
