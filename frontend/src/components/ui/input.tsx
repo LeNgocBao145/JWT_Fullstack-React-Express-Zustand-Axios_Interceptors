@@ -1,11 +1,11 @@
 import * as React from "react"
+
 import { cn } from "@/lib/utils"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
     return (
       <input
-        ref={ref} // ✅ quan trọng: react-hook-form cần ref để theo dõi giá trị
         type={type}
         data-slot="input"
         className={cn(
@@ -14,6 +14,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
           className
         )}
+        ref={ref}
         {...props}
       />
     )
