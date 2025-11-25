@@ -1,4 +1,3 @@
-import useAuthStore from "@/stores/authStore";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -10,7 +9,6 @@ interface IUserAvatarProps {
 }
 
 const UserAvatar = ({ type, name, avatarUrl, className }: IUserAvatarProps) => {
-  const { user } = useAuthStore();
   const bgColor = !avatarUrl ? "bg-blue-500" : "";
   if (!name) {
     name = "Moji";

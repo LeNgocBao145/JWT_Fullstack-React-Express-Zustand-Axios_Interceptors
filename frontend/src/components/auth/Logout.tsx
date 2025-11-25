@@ -1,4 +1,4 @@
-import React from "react";
+import { LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 import useAuthStore from "@/stores/authStore";
 import { useNavigate } from "react-router";
@@ -16,7 +16,9 @@ const Logout = () => {
   };
   return (
     <div>
-      <Button onClick={handleSignout}>Sign out</Button>
+      <Button variant='completedGhost' onClick={handleSignout}>
+        <LogOut className="text-destructive"/>
+        Log out</Button>
     </div>
   );
 };

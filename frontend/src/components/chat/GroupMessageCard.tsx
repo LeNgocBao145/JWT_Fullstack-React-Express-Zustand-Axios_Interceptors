@@ -2,6 +2,8 @@ import type { Conversation } from "@/types/Chat";
 import ChatCard from "./ChatCard";
 import useAuthStore from "@/stores/authStore";
 import useChatStore from "@/stores/chatStore";
+import GroupChatAvatar from "./GroupChatAvatar";
+import UnreadCountBadge from "./UnreadCountBadge";
 
 const GroupMessageCard = ({ conversation }: { conversation: Conversation }) => {
   const { user } = useAuthStore();
@@ -31,7 +33,13 @@ const GroupMessageCard = ({ conversation }: { conversation: Conversation }) => {
         onSelect={handleSelectConversation}
         unreadCount={unreadCount}
         leftSection={
-          <></>
+          <>
+            {unreadCount > 0 && <UnreadCountBadge unreadCount={unreadCount}/>}
+            <GroupChatAvatar 
+              participants={conversation.participants}
+              type='chat'
+            />
+          </>
         }
         subtitle={
           <p className="text-sm truncate text-muted-foreground">
