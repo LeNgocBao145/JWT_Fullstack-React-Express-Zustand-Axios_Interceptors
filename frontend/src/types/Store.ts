@@ -44,9 +44,11 @@ export interface ChatStore{
     nextCursor?: string | null; // pagination
   }>;
   activeConversationId: string | null;
-  loading: boolean;
+  conversationLoading: boolean;
+  messageLoading: boolean;
   reset: () => void;
 
   setActiveConversationId: (id: string | null) => void;
   fetchConversations: () => Promise<void>;
+  fetchMessages: (conversationId?: string) => Promise<void>;
 };
